@@ -3,18 +3,12 @@
 # Exploring Dashlane dump here
 
 require "base64"
-require "pbkdf2"
 require "digest"
 require "openssl"
 require "zlib"
 
 def compute_encryption_key password, salt
-    pbkdf2 = PBKDF2.new(password: password,
-                        salt: salt,
-                        iterations: 10204,
-                        key_length: 32,
-                        hash_function: :sha1)
-    pbkdf2.bin_string
+    OpenSSL::PKCS5.pbkdf2_hmac_sha1 password, salt, 10204, 32
 end
 
 SALT_LENGTH = 32
