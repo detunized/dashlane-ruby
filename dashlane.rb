@@ -5,6 +5,7 @@
 require "base64"
 require "pbkdf2"
 require "digest"
+require "openssl"
 
 def compute_encryption_key password, salt
     pbkdf2 = PBKDF2.new(password: password,
@@ -65,12 +66,24 @@ def derive_encryption_key_iv encryption_key, salt, iterations
     }
 end
 
+def decrypt_aes256 ciphertext, iv, encryption_key
+    aes = OpenSSL::Cipher::AES256.new :CBC
+    aes.decrypt
+    aes.key = encryption_key
+    aes.iv = iv
+    aes.update(ciphertext) + aes.final
+end
+
+def decrypt_blob blob, password
+    parsed = parse_encrypted_blob Base64.decode64 blob
+    key = compute_encryption_key password, parsed[:salt]
+    key_iv = derive_encryption_key_iv key, parsed[:salt], parsed[:iterations]
+    decrypt_aes256 parsed[:ciphertext],
+                   key_iv[:iv],
+                   parsed[:use_derived_key] ? key_iv[:key] : key
+end
+
 blob = "DX7UC8cXOLq9FcRCDCML6MxqtfxaoEiKALkHLpFQ/D9LV0Mz+VPkxu+eKOl/nYDCLhRVg7MCCAHydvDwh01pWvdEzSIKsn7hUL5Qk2hrW0mfclyzp3SjezXW15mI2CELaSA586vU0upV8zLAP//9JA6qVfmiSU7kzlglXGNSXKou67Fzw5WsB9/HWePSesjlRMfwhOHcy0+C6oXc7p1Fo1hO4V4="
-password = "password"
+password = "Password1337"
 
-parsed = parse_encrypted_blob Base64.decode64 blob
-key = compute_encryption_key password, parsed[:salt]
-key_iv = derive_encryption_key_iv key, parsed[:salt], parsed[:iterations]
-
-p key
-p key_iv
+p decrypt_blob blob, password
