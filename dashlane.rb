@@ -4,7 +4,7 @@
 
 require "pbkdf2"
 
-def derive_encryption_key password, salt
+def compute_encryption_key password, salt
     pbkdf2 = PBKDF2.new(password: password,
                         salt: salt,
                         iterations: 10204,
