@@ -6,6 +6,7 @@ require "base64"
 require "pbkdf2"
 require "digest"
 require "openssl"
+require "zlib"
 
 def compute_encryption_key password, salt
     pbkdf2 = PBKDF2.new(password: password,
@@ -74,13 +75,28 @@ def decrypt_aes256 ciphertext, iv, encryption_key
     aes.update(ciphertext) + aes.final
 end
 
+def inflate compressed
+    z = Zlib::Inflate.new(-Zlib::MAX_WBITS)
+    uncompressed = z.inflate compressed
+    z.finish
+    z.close
+
+    uncompressed
+end
+
 def decrypt_blob blob, password
     parsed = parse_encrypted_blob Base64.decode64 blob
     key = compute_encryption_key password, parsed[:salt]
     key_iv = derive_encryption_key_iv key, parsed[:salt], parsed[:iterations]
-    decrypt_aes256 parsed[:ciphertext],
-                   key_iv[:iv],
-                   parsed[:use_derived_key] ? key_iv[:key] : key
+    plaintext = decrypt_aes256 parsed[:ciphertext],
+                               key_iv[:iv],
+                               parsed[:use_derived_key] ? key_iv[:key] : key
+
+    if parsed[:compressed]
+        inflate(plaintext[6 .. -1])
+    else
+        plaintext
+    end
 end
 
 blob = "DX7UC8cXOLq9FcRCDCML6MxqtfxaoEiKALkHLpFQ/D9LV0Mz+VPkxu+eKOl/nYDCLhRVg7MCCAHydvDwh01pWvdEzSIKsn7hUL5Qk2hrW0mfclyzp3SjezXW15mI2CELaSA586vU0upV8zLAP//9JA6qVfmiSU7kzlglXGNSXKou67Fzw5WsB9/HWePSesjlRMfwhOHcy0+C6oXc7p1Fo1hO4V4="
