@@ -87,7 +87,7 @@ def decrypt_blob blob, password
                                parsed[:use_derived_key] ? key_iv[:key] : key
 
     if parsed[:compressed]
-        inflate(plaintext[6 .. -1])
+        inflate plaintext[6 .. -1]
     else
         plaintext
     end
