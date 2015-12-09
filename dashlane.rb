@@ -6,6 +6,7 @@ require "base64"
 require "digest"
 require "openssl"
 require "zlib"
+require "json"
 
 def compute_encryption_key password, salt
     OpenSSL::PKCS5.pbkdf2_hmac_sha1 password, salt, 10204, 32
@@ -93,7 +94,13 @@ def decrypt_blob blob, password
     end
 end
 
-blob = "DX7UC8cXOLq9FcRCDCML6MxqtfxaoEiKALkHLpFQ/D9LV0Mz+VPkxu+eKOl/nYDCLhRVg7MCCAHydvDwh01pWvdEzSIKsn7hUL5Qk2hrW0mfclyzp3SjezXW15mI2CELaSA586vU0upV8zLAP//9JA6qVfmiSU7kzlglXGNSXKou67Fzw5WsB9/HWePSesjlRMfwhOHcy0+C6oXc7p1Fo1hO4V4="
-password = "Password1337"
+def dump_vault filename, password
+    vault = JSON.load File.read filename
+    puts decrypt_blob vault["fullBackupFile"], password
+    vault["transactionList"].each do |i|
+        puts decrypt_blob i["content"], password
+    end
+end
 
-p decrypt_blob blob, password
+password = "Password1337"
+dump_vault "vault.json", password
