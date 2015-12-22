@@ -7,6 +7,7 @@ require "digest"
 require "openssl"
 require "zlib"
 require "json"
+require "rexml/document"
 
 SALT_LENGTH = 32
 VERSION_LENGTH = 4
@@ -105,6 +106,30 @@ def dump_vault filename, password
     end
 end
 
+def parse_xml xml
+    REXML::Document.new(xml).elements.to_a("/root/KWDataList/KWAuthentifiant").map { |i|
+        {
+                name: i.text("KWDataItem[@key='Title']"),
+            username: i.text("KWDataItem[@key='Login']"),
+            password: i.text("KWDataItem[@key='Password']"),
+                 url: i.text("KWDataItem[@key='Url']")
+        }
+    }
+end
+
+def load_vault filename, password
+    vault = JSON.load File.read filename
+
+    xml = {
+        base: decrypt_blob(vault["fullBackupFile"], password),
+        transactions: vault["transactionList"].map { |i| decrypt_blob i["content"], password }
+    }
+
+    parse_xml xml[:base]
+
+    # TODO: Apply transactions here
+end
+
 if __FILE__ == $0
-    dump_vault "vault.json", "Password1337"
+    p load_vault "vault.json", "Password1337"
 end
