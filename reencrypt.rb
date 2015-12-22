@@ -45,5 +45,5 @@ def reencrypt_vault filename, password, new_password
     vault
 end
 
-vault = reencrypt_vault "vault.json", "Password1337", "Password1337"
+vault = reencrypt_vault "vault.json", File.read(".password").strip, "Password1337"
 puts JSON.pretty_generate vault
