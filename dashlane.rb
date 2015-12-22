@@ -8,24 +8,26 @@ require "openssl"
 require "zlib"
 require "json"
 
+SALT_LENGTH = 32
+VERSION_LENGTH = 4
+KWC3_VERSION = "KWC3"
+
 def compute_encryption_key password, salt
     OpenSSL::PKCS5.pbkdf2_hmac_sha1 password, salt, 10204, 32
 end
-
-SALT_LENGTH = 32
-VERSION_LENGTH = 4
 
 def parse_encrypted_blob blob
     salt = blob[0, SALT_LENGTH]
     version = blob[SALT_LENGTH, VERSION_LENGTH]
 
-    if version == "KWC3"
+    if version == KWC3_VERSION
         {
                        salt: salt,
                  ciphertext: blob[SALT_LENGTH + VERSION_LENGTH .. -1],
                  compressed: true,
             use_derived_key: false,
-                 iterations: 1
+                 iterations: 1,
+                    version: version
         }
     else
         {
@@ -33,7 +35,8 @@ def parse_encrypted_blob blob
                  ciphertext: blob[SALT_LENGTH .. -1],
                  compressed: false,
             use_derived_key: true,
-                 iterations: 5
+                 iterations: 5,
+                    version: ""
         }
     end
 end
