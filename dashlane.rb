@@ -105,5 +105,6 @@ def dump_vault filename, password
     end
 end
 
-password = "Password1337"
-dump_vault "vault.json", password
+if __FILE__ == $0
+    dump_vault "vault.json", "Password1337"
+end
