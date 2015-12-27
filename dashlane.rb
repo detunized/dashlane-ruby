@@ -123,7 +123,7 @@ def load_vault filename, password
     accounts = parse_xml decrypt_blob vault["fullBackupFile"], password
 
     accounts += vault["transactionList"]
-        .select { |i| i["type"] == "AUTHENTIFIANT" }
+        .select { |i| i["type"] == "AUTHENTIFIANT" && i["action"] == "BACKUP_EDIT" }
         .flat_map { |i| parse_xml decrypt_blob i["content"], password }
 
     accounts
