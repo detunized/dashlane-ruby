@@ -107,7 +107,7 @@ def dump_vault filename, password
 end
 
 def parse_xml xml
-    REXML::Document.new(xml).elements.to_a("/root/KWDataList/KWAuthentifiant").map { |i|
+    REXML::Document.new(xml).elements.to_a("//KWAuthentifiant").map { |i|
         {
                 name: i.text("KWDataItem[@key='Title']"),
             username: i.text("KWDataItem[@key='Login']"),
@@ -120,14 +120,13 @@ end
 def load_vault filename, password
     vault = JSON.load File.read filename
 
-    xml = {
-        base: decrypt_blob(vault["fullBackupFile"], password),
-        transactions: vault["transactionList"].map { |i| decrypt_blob i["content"], password }
-    }
+    accounts = parse_xml decrypt_blob vault["fullBackupFile"], password
 
-    parse_xml xml[:base]
+    accounts += vault["transactionList"]
+        .select { |i| i["type"] == "AUTHENTIFIANT" }
+        .flat_map { |i| parse_xml decrypt_blob i["content"], password }
 
-    # TODO: Apply transactions here
+    accounts
 end
 
 if __FILE__ == $0
