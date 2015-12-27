@@ -39,7 +39,7 @@ def reencrypt_vault filename, password, new_password
     vault = JSON.load File.read filename
     vault["fullBackupFile"] = reencrypt_blob vault["fullBackupFile"], password, new_password
     vault["transactionList"].each do |i|
-        if i.key? "content"
+        if i.key?("content") && !i["content"].empty?
             i["content"] = reencrypt_blob i["content"], password, new_password
         end
     end
