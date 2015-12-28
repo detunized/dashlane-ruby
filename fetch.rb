@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require "net/http"
 require_relative "dashlane"
 
 def find_settings_file username
@@ -25,8 +26,22 @@ def load_uki username, password
     REXML::Document.new(xml).text "/root/KWLocalSettingsManager/KWDataItem[@key='uki']"
 end
 
+def fetch username, uki
+    uri = URI "https://www.dashlane.com/12/backup/latest"
+    response = Net::HTTP.post_form uri, {
+        login: username,
+        lock: "nolock",
+        timestamp: 1,
+        sharingTimestamp: 0,
+        uki: uki
+    }
+
+    raise "Fetch failed" if response.code != "200"
+
+    response.body
+end
+
 username = File.read(".username").strip
 password = File.read(".password").strip
 uki = load_uki username, password
-
-p uki
+puts fetch username, uki
