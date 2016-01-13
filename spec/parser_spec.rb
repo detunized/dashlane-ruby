@@ -25,7 +25,6 @@ describe Dashlane::Parser do
         end
 
         it "parses legacy blob" do
-            version = "KWC3"
             expected = {
                            salt: salt,
                      ciphertext: content,
