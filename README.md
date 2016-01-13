@@ -1,6 +1,8 @@
 Dashlane Ruby API
 =================
 
+[![Build Status](https://travis-ci.org/detunized/dashlane-ruby.svg?branch=master)](https://travis-ci.org/detunized/dashlane-ruby)
+
 **This is unofficial Dashlane API.**
 
 Currently in development. Not much to say.
