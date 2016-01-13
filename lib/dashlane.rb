@@ -6,6 +6,7 @@ require "openssl"
 require "rexml/document"
 require "zlib"
 
+require "dashlane/account"
 require "dashlane/fetcher"
 require "dashlane/parser"
 require "dashlane/vault"
