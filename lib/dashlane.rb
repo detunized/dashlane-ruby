@@ -3,6 +3,7 @@
 
 require "json"
 require "openssl"
+require "rexml/document"
 require "zlib"
 
 require "dashlane/fetcher"

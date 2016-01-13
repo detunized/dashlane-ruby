@@ -118,4 +118,54 @@ describe Dashlane::Parser do
             expect(Dashlane::Parser.decrypt_blob blob, password).to eq content
         end
     end
+
+    describe ".extract_accounts_from_xml" do
+        let(:accounts_xml) { %q{
+            <KWAuthentifiant>
+                <KWDataItem key="Title"><![CDATA[dude]]></KWDataItem>
+                <KWDataItem key="Login"><![CDATA[jeffrey.lebowski]]></KWDataItem>
+                <KWDataItem key="Password"><![CDATA[logjammin]]></KWDataItem>
+                <KWDataItem key="Url"><![CDATA[https://dude.com]]></KWDataItem>
+                <KWDataItem key="Note"><![CDATA[Get a new rug!]]></KWDataItem>
+            </KWAuthentifiant>
+            <KWAuthentifiant>
+                <KWDataItem key="Title"><![CDATA[walter]]></KWDataItem>
+                <KWDataItem key="Login"><![CDATA[walter.sobchak]]></KWDataItem>
+                <KWDataItem key="Password"><![CDATA[worldofpain]]></KWDataItem>
+                <KWDataItem key="Url"><![CDATA[https://nam.com]]></KWDataItem>
+                <KWDataItem key="Note"><![CDATA[Don't roll on Shabbos!]]></KWDataItem>
+            </KWAuthentifiant>
+        } }
+
+        let(:accounts) { [
+            {
+                    name: "dude",
+                username: "jeffrey.lebowski",
+                password: "logjammin",
+                     url: "https://dude.com"
+            },
+            {
+                    name: "walter",
+                username: "walter.sobchak",
+                password: "worldofpain",
+                     url: "https://nam.com"
+            },
+        ] }
+
+        def check xml, expected
+            expect(Dashlane::Parser.extract_accounts_from_xml xml).to eq expected
+        end
+
+        it "returns an empty array when no accounts present" do
+            check "<root />", []
+        end
+
+        it "returns accounts at level 1" do
+            check "<root>#{accounts_xml}</root>", accounts
+        end
+
+        it "returns accounts at level 2" do
+            check "<root><subroot>#{accounts_xml}</subroot></root>", accounts
+        end
+    end
 end
