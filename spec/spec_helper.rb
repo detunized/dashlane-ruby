@@ -7,5 +7,17 @@ if ENV["CI"] == "true" && ENV["TRAVIS"] == "true"
     Coveralls.wear!
 end
 
-require "dashlane"
+require "base64"
 require "rspec/its"
+
+require "dashlane"
+
+class String
+    def decode_base64
+        Base64.decode64 self
+    end
+
+    def decode_hex
+        scan(/../).map { |i| i.to_i 16 }.pack "c*"
+    end
+end

@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license. See LICENCE for details.
 
 require "json"
+require "openssl"
 
 require "dashlane/fetcher"
 require "dashlane/vault"
