@@ -94,4 +94,13 @@ describe Dashlane::Parser do
             expect(Dashlane::Parser.decrypt_aes256 ciphertext, iv, encryption_key).to eq plaintext
         end
     end
+
+    describe ".inflate" do
+        let(:compressed) { "c8zJUajMLy1SSEosTlVILEpVSErNyc9LVyjJVygtBgA=".decode_base64 }
+        let(:content) { "All your base are belong to us" }
+
+        it "returns inflated content" do
+            expect(Dashlane::Parser.inflate compressed).to eq content
+        end
+    end
 end

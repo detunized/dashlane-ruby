@@ -67,5 +67,14 @@ module Dashlane
             aes.iv = iv
             aes.update(ciphertext) + aes.final
         end
+
+        def self.inflate compressed
+            z = Zlib::Inflate.new(-Zlib::MAX_WBITS)
+            uncompressed = z.inflate compressed
+            z.finish
+            z.close
+
+            uncompressed
+        end
     end
 end
