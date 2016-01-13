@@ -2,6 +2,7 @@ Dashlane Ruby API
 =================
 
 [![Build Status](https://travis-ci.org/detunized/dashlane-ruby.svg?branch=master)](https://travis-ci.org/detunized/dashlane-ruby)
+[![Code Climate](https://codeclimate.com/github/detunized/dashlane-ruby/badges/gpa.svg)](https://codeclimate.com/github/detunized/dashlane-ruby)
 
 **This is unofficial Dashlane API.**
 
