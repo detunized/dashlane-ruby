@@ -83,4 +83,15 @@ describe Dashlane::Parser do
             }
         end
     end
+
+    describe ".decrypt_aes256" do
+        let(:ciphertext) { "TZ1+if9ofqRKTatyUaOnfudletslMJ/RZyUwJuR/+aI=".decode_base64 }
+        let(:iv) { "YFuiAVZgOD2K+s6y8yaMOw==".decode_base64 }
+        let(:encryption_key) { "OfOUvVnQzB4v49sNh4+PdwIFb9Fr5+jVfWRTf+E2Ghg=".decode_base64 }
+        let(:plaintext) { "All your base are belong to us" }
+
+        it "returns decrypted plaintext" do
+            expect(Dashlane::Parser.decrypt_aes256 ciphertext, iv, encryption_key).to eq plaintext
+        end
+    end
 end

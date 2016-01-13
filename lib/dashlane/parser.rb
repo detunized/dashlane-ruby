@@ -59,5 +59,13 @@ module Dashlane
                 iv: key_iv[32, 16]
             }
         end
+
+        def self.decrypt_aes256 ciphertext, iv, encryption_key
+            aes = OpenSSL::Cipher::AES256.new :CBC
+            aes.decrypt
+            aes.key = encryption_key
+            aes.iv = iv
+            aes.update(ciphertext) + aes.final
+        end
     end
 end
