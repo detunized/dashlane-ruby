@@ -142,13 +142,15 @@ describe Dashlane::Parser do
                     name: "dude",
                 username: "jeffrey.lebowski",
                 password: "logjammin",
-                     url: "https://dude.com"
+                     url: "https://dude.com",
+                    note: "Get a new rug!",
             },
             {
                     name: "walter",
                 username: "walter.sobchak",
                 password: "worldofpain",
-                     url: "https://nam.com"
+                     url: "https://nam.com",
+                    note: "Don't roll on Shabbos!",
             },
         ] }
 

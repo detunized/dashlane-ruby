@@ -98,7 +98,8 @@ module Dashlane
                         name: i.text("KWDataItem[@key='Title']"),
                     username: i.text("KWDataItem[@key='Login']"),
                     password: i.text("KWDataItem[@key='Password']"),
-                         url: i.text("KWDataItem[@key='Url']")
+                         url: i.text("KWDataItem[@key='Url']"),
+                        note: i.text("KWDataItem[@key='Note']"),
                 }
             }
         end
