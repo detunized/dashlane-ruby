@@ -42,11 +42,45 @@ describe Dashlane::Parser do
 
     describe ".compute_encryption_key" do
         let(:password) { "password" }
-        let(:salt) { "salt" }
-        let(:encryption_key) { "ImVTD46STEbPkg4szsKMQXtEBfK3l1zYaUjOo681GWs=".decode_base64 }
+        let(:salt) { "salt" * 8 }
+        let(:encryption_key) { "OAIU9FREAugcAkNtoeoUithzi2qXJQc6Gfj5WgPD0mY=".decode_base64 }
 
         it "returns an encryption key" do
             expect(Dashlane::Parser.compute_encryption_key password, salt).to eq encryption_key
+        end
+    end
+
+    describe ".sha1" do
+        let(:bytes) { "All your base are belong to us" }
+
+        def check times, expected
+            expect(Dashlane::Parser.sha1 bytes, times).to eq expected
+        end
+
+        it "returns SHA1 checksum" do
+            check 1, "xgmXgTCENlJpbnSLucn3NwPXkIk=".decode_base64
+            check 5, "RqcjtwJ5KY1MON7n3WwvqGhrrpg=".decode_base64
+        end
+    end
+
+    describe ".derive_encryption_key_iv" do
+        let(:encryption_key) { "OAIU9FREAugcAkNtoeoUithzi2qXJQc6Gfj5WgPD0mY=".decode_base64 }
+        let(:salt) { "salt" * 8 }
+
+        def check iterations, expected
+            expect(Dashlane::Parser.derive_encryption_key_iv encryption_key, salt, 1).to eq expected
+        end
+
+        it "returns an encryption key and IVs" do
+            check 1, {
+                key: "6HA2Rq9GTeKzAc1imNjvyaXBGW4zRA5wIr60Vbx/o8w=".decode_base64,
+                 iv: "fCk2EkpIYGn05JHcVfR8eQ==".decode_base64
+            }
+
+            check 5, {
+                key: "6HA2Rq9GTeKzAc1imNjvyaXBGW4zRA5wIr60Vbx/o8w=".decode_base64,
+                iv: "fCk2EkpIYGn05JHcVfR8eQ==".decode_base64
+            }
         end
     end
 end
