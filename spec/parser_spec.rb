@@ -39,4 +39,14 @@ describe Dashlane::Parser do
                 .to eq expected
         end
     end
+
+    describe ".compute_encryption_key" do
+        let(:password) { "password" }
+        let(:salt) { "salt" }
+        let(:encryption_key) { "ImVTD46STEbPkg4szsKMQXtEBfK3l1zYaUjOo681GWs=".decode_base64 }
+
+        it "returns an encryption key" do
+            expect(Dashlane::Parser.compute_encryption_key password, salt).to eq encryption_key
+        end
+    end
 end
