@@ -76,5 +76,20 @@ module Dashlane
 
             uncompressed
         end
+
+        def self.decrypt_blob blob, password
+            parsed = parse_encrypted_blob Base64.decode64 blob
+            key = compute_encryption_key password, parsed[:salt]
+            key_iv = derive_encryption_key_iv key, parsed[:salt], parsed[:iterations]
+            plaintext = decrypt_aes256 parsed[:ciphertext],
+                                       key_iv[:iv],
+                                       parsed[:use_derived_key] ? key_iv[:key] : key
+
+            if parsed[:compressed]
+                inflate plaintext[6 .. -1]
+            else
+                plaintext
+            end
+        end
     end
 end
