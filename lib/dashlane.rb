@@ -5,5 +5,6 @@ require "json"
 require "openssl"
 
 require "dashlane/fetcher"
+require "dashlane/parser"
 require "dashlane/vault"
 require "dashlane/version"
