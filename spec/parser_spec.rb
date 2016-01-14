@@ -106,13 +106,9 @@ describe Dashlane::Parser do
 
     describe ".decrypt_blob" do
         let(:password) { "password"}
-        let(:blob) { "T+/5FeWHo/AGe9kLULw+PGzQQseYT0IQkF84LtDQTmZLV0MzBMOknkr2SdlP2f" +
-                     "3VmlsVAt+9A8hlwXY014OeflgUejN4qwL7i/04AZZrDKGfRWmfn6EwhyBrt0Bg" +
-                     "BOQgKiNNB3V7gZWMOaec5I5tlOrgDny3Xcs4jTJrrN+WF9KV7VyaQ1Bbuu7Tfi" +
-                     "E/pwJz8EZ4xWbV8YTc/QLgXpEIC8I2xeM=" }
-        let(:content) { %Q{<?xml version="1.0" encoding="UTF-8"?><root><KWSecurityAlertsManager>} +
-                        %Q{<KWDataList key="PwndList"/><KWDataList key="SecurityAlerts"/>} +
-                        %Q{</KWSecurityAlertsManager></root>\n} }
+        let(:blob) { "c2FsdHNhbHRzYWx0c2FsdHNhbHRzYWx0c2FsdHNhbHRLV0MzxDNg8kGh5rSYkNvXzzn+3xsCKXS" +
+                     "KgGhb2pGnbuqQo32blVfJpurp7jj8oSnzxa66" }
+        let(:content) { "All your base are belong to us" }
 
         it "returns decrypted content" do
             expect(Dashlane::Parser.decrypt_blob blob, password).to eq content
