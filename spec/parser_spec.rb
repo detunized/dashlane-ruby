@@ -4,10 +4,23 @@
 require "spec_helper"
 
 describe Dashlane::Parser do
-    describe ".parse_encrypted_blob" do
-        let(:salt) { "salt" * 8 }
-        let(:content) { "All your base are belong to us" }
+    let(:password) { "password" }
+    let(:salt) { "salt" * 8 }
+    let(:content) { "All your base are belong to us" }
+    let(:accounts) { [
+        Dashlane::Account.new("dude",
+                              "jeffrey.lebowski",
+                              "logjammin",
+                              "https://dude.com",
+                              "Get a new rug!"),
+        Dashlane::Account.new("walter",
+                              "walter.sobchak",
+                              "worldofpain",
+                              "https://nam.com",
+                              "Don't roll on Shabbos!"),
+    ] }
 
+    describe ".parse_encrypted_blob" do
         it "parses KWC3 blob" do
             version = "KWC3"
             expected = {
@@ -41,8 +54,6 @@ describe Dashlane::Parser do
     end
 
     describe ".compute_encryption_key" do
-        let(:password) { "password" }
-        let(:salt) { "salt" * 8 }
         let(:encryption_key) { "OAIU9FREAugcAkNtoeoUithzi2qXJQc6Gfj5WgPD0mY=".decode_base64 }
 
         it "returns an encryption key" do
@@ -51,10 +62,8 @@ describe Dashlane::Parser do
     end
 
     describe ".sha1" do
-        let(:bytes) { "All your base are belong to us" }
-
         def check times, expected
-            expect(Dashlane::Parser.sha1 bytes, times).to eq expected
+            expect(Dashlane::Parser.sha1 content, times).to eq expected
         end
 
         it "returns SHA1 checksum" do
@@ -65,7 +74,6 @@ describe Dashlane::Parser do
 
     describe ".derive_encryption_key_iv" do
         let(:encryption_key) { "OAIU9FREAugcAkNtoeoUithzi2qXJQc6Gfj5WgPD0mY=".decode_base64 }
-        let(:salt) { "salt" * 8 }
 
         def check iterations, expected
             expect(Dashlane::Parser.derive_encryption_key_iv encryption_key, salt, 1).to eq expected
@@ -88,16 +96,14 @@ describe Dashlane::Parser do
         let(:ciphertext) { "TZ1+if9ofqRKTatyUaOnfudletslMJ/RZyUwJuR/+aI=".decode_base64 }
         let(:iv) { "YFuiAVZgOD2K+s6y8yaMOw==".decode_base64 }
         let(:encryption_key) { "OfOUvVnQzB4v49sNh4+PdwIFb9Fr5+jVfWRTf+E2Ghg=".decode_base64 }
-        let(:plaintext) { "All your base are belong to us" }
 
         it "returns decrypted plaintext" do
-            expect(Dashlane::Parser.decrypt_aes256 ciphertext, iv, encryption_key).to eq plaintext
+            expect(Dashlane::Parser.decrypt_aes256 ciphertext, iv, encryption_key).to eq content
         end
     end
 
     describe ".inflate" do
         let(:compressed) { "c8zJUajMLy1SSEosTlVILEpVSErNyc9LVyjJVygtBgA=".decode_base64 }
-        let(:content) { "All your base are belong to us" }
 
         it "returns inflated content" do
             expect(Dashlane::Parser.inflate compressed).to eq content
@@ -105,10 +111,8 @@ describe Dashlane::Parser do
     end
 
     describe ".decrypt_blob" do
-        let(:password) { "password"}
         let(:blob) { "c2FsdHNhbHRzYWx0c2FsdHNhbHRzYWx0c2FsdHNhbHRLV0MzxDNg8kGh5rSYkNvXzzn+3xsCKXS" +
                      "KgGhb2pGnbuqQo32blVfJpurp7jj8oSnzxa66" }
-        let(:content) { "All your base are belong to us" }
 
         it "returns decrypted content" do
             expect(Dashlane::Parser.decrypt_blob blob, password).to eq content
@@ -132,19 +136,6 @@ describe Dashlane::Parser do
                 <KWDataItem key="Note"><![CDATA[Don't roll on Shabbos!]]></KWDataItem>
             </KWAuthentifiant>
         } }
-
-        let(:accounts) { [
-            Dashlane::Account.new("dude",
-                                  "jeffrey.lebowski",
-                                  "logjammin",
-                                  "https://dude.com",
-                                  "Get a new rug!"),
-            Dashlane::Account.new("walter",
-                                  "walter.sobchak",
-                                  "worldofpain",
-                                  "https://nam.com",
-                                  "Don't roll on Shabbos!"),
-        ] }
 
         def check xml, expected
             expect(Dashlane::Parser.extract_accounts_from_xml xml).to eq expected
