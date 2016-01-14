@@ -47,5 +47,22 @@ def reencrypt_vault filename, password, new_password
     vault
 end
 
+def zip text
+    Zlib::Deflate.new(Zlib::DEFAULT_COMPRESSION, -Zlib::MAX_WBITS).deflate text, Zlib::FINISH
+end
+
+def encrypt_blob text, password, salt
+    key = compute_encryption_key password, salt
+    key_iv = derive_encryption_key_iv key, salt, 1
+    zipped = zip text
+    encrypted = encrypt_aes256 "beefed" + zipped, key_iv[:iv], key
+
+    salt + KWC3_VERSION + encrypted
+end
+
+def encrypt_blob_base64 text, password, salt
+    Base64.strict_encode64 encrypt_blob text, password, salt
+end
+
 vault = reencrypt_vault "encrypted.json", File.read(".password").strip, "Password1337"
 puts JSON.pretty_generate vault
