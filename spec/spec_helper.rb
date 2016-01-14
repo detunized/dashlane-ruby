@@ -21,3 +21,15 @@ class String
         scan(/../).map { |i| i.to_i 16 }.pack "c*"
     end
 end
+
+module Dashlane
+    class Account
+        def == other
+            name == other.name &&
+                username == other.username &&
+                password == other.password &&
+                url == other.url &&
+                note == other.note
+        end
+    end
+end

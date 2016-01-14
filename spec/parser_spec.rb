@@ -138,20 +138,16 @@ describe Dashlane::Parser do
         } }
 
         let(:accounts) { [
-            {
-                    name: "dude",
-                username: "jeffrey.lebowski",
-                password: "logjammin",
-                     url: "https://dude.com",
-                    note: "Get a new rug!",
-            },
-            {
-                    name: "walter",
-                username: "walter.sobchak",
-                password: "worldofpain",
-                     url: "https://nam.com",
-                    note: "Don't roll on Shabbos!",
-            },
+            Dashlane::Account.new("dude",
+                                  "jeffrey.lebowski",
+                                  "logjammin",
+                                  "https://dude.com",
+                                  "Get a new rug!"),
+            Dashlane::Account.new("walter",
+                                  "walter.sobchak",
+                                  "worldofpain",
+                                  "https://nam.com",
+                                  "Don't roll on Shabbos!"),
         ] }
 
         def check xml, expected
