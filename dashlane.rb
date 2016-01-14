@@ -130,5 +130,5 @@ def load_vault filename, password
 end
 
 if __FILE__ == $0
-    p load_vault "vault.json", "Password1337"
+    p load_vault "vault.json", "password"
 end

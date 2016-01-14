@@ -64,5 +64,5 @@ def encrypt_blob_base64 text, password, salt
     Base64.strict_encode64 encrypt_blob text, password, salt
 end
 
-vault = reencrypt_vault "encrypted.json", File.read(".password").strip, "Password1337"
+vault = reencrypt_vault "encrypted.json", File.read(".password").strip, "password"
 puts JSON.pretty_generate vault
