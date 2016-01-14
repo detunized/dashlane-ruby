@@ -153,4 +153,16 @@ describe Dashlane::Parser do
             check "<root><subroot>#{accounts_xml}</subroot></root>", accounts
         end
     end
+
+    describe ".extract_encrypted_accounts" do
+        let(:blob) { "c2FsdHNhbHRzYWx0c2FsdHNhbHRzYWx0c2FsdHNhbHRLV0MzAxW0NQiQrbiEe4yl26GagNu1edW" +
+                     "/lK/INVrdUkE1+nmpiTZHlNkKKSK5NXbWGuztnk3256De1/2GtaUXjTKOMYvheV3TJJZWHKHEbS" +
+                     "BHJ63OXH/svTCBm1yncDDcqWicVOjQwzP5C4oTmRB9jCAE9A7kx8bZjz2VQaAAxbKWwCFCSrzFX" +
+                     "B22R6DwH+rpnKshrcHiflI8Fy2o000mU1XRhk1yFNqYZkiJBH0N3aJR7AkqRRALhUaLsMgYWsCx" +
+                     "PqD9dP0dsp7A03htUKllVMfjfRexwJfJGi2ezSUvegGVt3k=" }
+
+        it "returns an account" do
+            expect(Dashlane::Parser.extract_encrypted_accounts blob, password).to eq accounts
+        end
+    end
 end

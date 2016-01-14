@@ -101,5 +101,9 @@ module Dashlane
                             i.text("KWDataItem[@key='Note']")
             }
         end
+
+        def self.extract_encrypted_accounts blob, password
+            extract_accounts_from_xml decrypt_blob blob, password
+        end
     end
 end
