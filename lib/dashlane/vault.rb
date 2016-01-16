@@ -22,6 +22,8 @@ module Dashlane
             if data.key?("fullBackupFile") && !data["fullBackupFile"].empty?
                 @accounts += Parser.extract_accounts_from_xml Parser.decrypt_blob data["fullBackupFile"], password
             end
+
+            # TODO: Parse transactions. Currently have no test case.
         end
     end
 end
