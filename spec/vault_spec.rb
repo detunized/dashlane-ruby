@@ -21,10 +21,10 @@ describe Dashlane::Vault do
         end
     end
 
-    describe ".open" do
+    describe ".new" do
         it "returns a vault" do
             blob = File.read filename
-            expect(Dashlane::Vault.open blob, password).to be_a Dashlane::Vault
+            expect(Dashlane::Vault.new blob, password).to be_a Dashlane::Vault
         end
     end
 end
