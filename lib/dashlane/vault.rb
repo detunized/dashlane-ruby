@@ -5,19 +5,19 @@ module Dashlane
     class Vault
         def self.open_remote username, password, uki
             text = Fetcher.fetch username, uki
-            open text, username, password
+            open text, password
         end
 
         def self.open_local filename, username, password
             text = File.read filename
-            open text, username, password
+            open text, password
         end
 
-        def self.open text, username, password
-            new text
+        def self.open text, password
+            new text, password
         end
 
-        def initialize text
+        def initialize text, password
             data = JSON.load text
         end
     end
