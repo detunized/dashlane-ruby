@@ -8,6 +8,8 @@ describe Dashlane::Vault do
     let(:password) { "password" }
     let(:uki) { "uki" }
     let(:filename) { "vault.json" }
+    let(:blob) { File.read filename }
+    let(:vault) { Dashlane::Vault.new blob, password }
 
     describe ".open_remote" do
         it "returns a vault" do
@@ -23,8 +25,15 @@ describe Dashlane::Vault do
 
     describe ".new" do
         it "returns a vault" do
-            blob = File.read filename
             expect(Dashlane::Vault.new blob, password).to be_a Dashlane::Vault
+        end
+    end
+
+    describe "#accounts" do
+        context "returned accounts" do
+            it { expect(vault.accounts).to be_instance_of Array }
+            it { expect(vault.accounts).not_to be_empty }
+            it { expect(vault.accounts).to all(be_an Dashlane::Account) }
         end
     end
 end

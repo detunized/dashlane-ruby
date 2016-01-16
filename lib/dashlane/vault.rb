@@ -3,6 +3,8 @@
 
 module Dashlane
     class Vault
+        attr_reader :accounts
+
         def self.open_remote username, password, uki
             text = Fetcher.fetch username, uki
             new text, password
@@ -15,6 +17,11 @@ module Dashlane
 
         def initialize text, password
             data = JSON.load text
+
+            @accounts = []
+            if data.key?("fullBackupFile") && !data["fullBackupFile"].empty?
+                @accounts += Parser.extract_accounts_from_xml Parser.decrypt_blob data["fullBackupFile"], password
+            end
         end
     end
 end
