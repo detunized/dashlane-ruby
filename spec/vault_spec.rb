@@ -20,4 +20,11 @@ describe Dashlane::Vault do
             expect(Dashlane::Vault.open_local filename, username, password).to be_a Dashlane::Vault
         end
     end
+
+    describe ".open" do
+        it "returns a vault" do
+            blob = File.read filename
+            expect(Dashlane::Vault.open blob, username, password).to be_a Dashlane::Vault
+        end
+    end
 end
