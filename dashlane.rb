@@ -108,7 +108,7 @@ def dump_vault filename, password
     pretty_print_xml decrypt_blob vault["fullBackupFile"], password
     vault["transactionList"].each do |i|
         if i.fetch("content", "") != ""
-            puts "---"
+            puts "<!-- [ #{i["type"]}/#{i["action"]} ] -->"
             pretty_print_xml decrypt_blob i["content"], password
         end
     end
