@@ -11,13 +11,15 @@ describe Dashlane::Vault do
     let(:blob) { File.read filename }
     let(:vault) { Dashlane::Vault.new blob, password }
 
-    let(:dude) { Dashlane::Account.new "dude.com",
+    let(:dude) { Dashlane::Account.new "1",
+                                       "dude.com",
                                        "jeffrey.lebowski",
                                        "logjammin",
                                        "https://dude.com",
                                        "Get a new rug!" }
 
-    let(:nam) { Dashlane::Account.new "nam.com",
+    let(:nam) { Dashlane::Account.new "2",
+                                      "nam.com",
                                       "walter.sobchak",
                                       "worldofpain",
                                       "https://nam.com",

@@ -3,13 +3,15 @@
 
 module Dashlane
     class Account
-        attr_reader :name,
+        attr_reader :id,
+                    :name,
                     :username,
                     :password,
                     :url,
                     :note
 
-        def initialize name, username, password, url, note
+        def initialize id, name, username, password, url, note
+            @id = id
             @name = name
             @username = username
             @password = password

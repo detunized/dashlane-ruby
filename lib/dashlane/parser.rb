@@ -94,7 +94,8 @@ module Dashlane
 
         def self.extract_accounts_from_xml xml
             REXML::Document.new(xml).elements.to_a("//KWAuthentifiant").map { |i|
-                Account.new i.text("KWDataItem[@key='Title']"),
+                Account.new i.text("KWDataItem[@key='Id']"),
+                            i.text("KWDataItem[@key='Title']"),
                             i.text("KWDataItem[@key='Login']"),
                             i.text("KWDataItem[@key='Password']"),
                             i.text("KWDataItem[@key='Url']"),

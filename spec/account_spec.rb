@@ -4,14 +4,16 @@
 require "spec_helper"
 
 describe Dashlane::Account do
+    let(:id) { "id" }
     let(:name) { "name" }
     let(:username) { "username" }
     let(:password) { "password" }
     let(:url) { "url" }
     let(:note) { "note" }
 
-    subject { Dashlane::Account.new name, username, password, url, note }
+    subject { Dashlane::Account.new id, name, username, password, url, note }
 
+    its(:id) { should eq id }
     its(:name) { should eq name }
     its(:username) { should eq username }
     its(:password) { should eq password }

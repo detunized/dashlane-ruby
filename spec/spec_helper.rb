@@ -25,6 +25,7 @@ end
 module Dashlane
     class Account
         def == other
+            # Not comparing ids here since it complicates test data generation process like hell
             name == other.name &&
                 username == other.username &&
                 password == other.password &&

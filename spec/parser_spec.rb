@@ -8,12 +8,14 @@ describe Dashlane::Parser do
     let(:salt) { "salt" * 8 }
     let(:content) { "All your base are belong to us" }
     let(:accounts) { [
-        Dashlane::Account.new("dude",
+        Dashlane::Account.new("1",
+                              "dude",
                               "jeffrey.lebowski",
                               "logjammin",
                               "https://dude.com",
                               "Get a new rug!"),
-        Dashlane::Account.new("walter",
+        Dashlane::Account.new("2",
+                              "walter",
                               "walter.sobchak",
                               "worldofpain",
                               "https://nam.com",
