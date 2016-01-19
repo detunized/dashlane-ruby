@@ -20,12 +20,12 @@ module Dashlane
 
             @accounts = []
             if data.key?("fullBackupFile") && !data["fullBackupFile"].empty?
-                @accounts += Parser.extract_accounts_from_xml Parser.decrypt_blob data["fullBackupFile"], password
+                @accounts += Parser.extract_encrypted_accounts data["fullBackupFile"], password
             end
 
             @accounts += data["transactionList"]
                 .select { |i| i["type"] == "AUTHENTIFIANT" && i["action"] == "BACKUP_EDIT" }
-                .flat_map { |i| Parser.extract_accounts_from_xml Parser.decrypt_blob i["content"], password }
+                .flat_map { |i| Parser.extract_encrypted_accounts i["content"], password }
         end
     end
 end
