@@ -36,4 +36,14 @@ describe Dashlane::Vault do
             it { expect(vault.accounts).to all(be_an Dashlane::Account) }
         end
     end
+
+    describe "vault configurations" do
+        def accounts filename
+            Dashlane::Vault.open_local("spec/fixtures/#{filename}.json", username, password).accounts
+        end
+
+        context "empty vault" do
+            it { expect(accounts "empty-vault").to be_empty }
+        end
+    end
 end
