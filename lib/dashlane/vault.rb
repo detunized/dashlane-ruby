@@ -23,7 +23,9 @@ module Dashlane
                 @accounts += Parser.extract_accounts_from_xml Parser.decrypt_blob data["fullBackupFile"], password
             end
 
-            # TODO: Parse transactions. Currently have no test case.
+            @accounts += data["transactionList"]
+                .select { |i| i["type"] == "AUTHENTIFIANT" && i["action"] == "BACKUP_EDIT" }
+                .flat_map { |i| Parser.extract_accounts_from_xml Parser.decrypt_blob i["content"], password }
         end
     end
 end

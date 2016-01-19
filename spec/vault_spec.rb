@@ -11,6 +11,12 @@ describe Dashlane::Vault do
     let(:blob) { File.read filename }
     let(:vault) { Dashlane::Vault.new blob, password }
 
+    let(:dude) { Dashlane::Account.new "dude.com",
+                                       "jeffrey.lebowski",
+                                       "logjammin",
+                                       "https://dude.com",
+                                       "Get a new rug!" }
+
     describe ".open_remote" do
         it "returns a vault" do
             expect(Dashlane::Vault.open_remote username, password, uki).to be_a Dashlane::Vault
@@ -44,6 +50,10 @@ describe Dashlane::Vault do
 
         context "empty vault" do
             it { expect(accounts "empty-vault").to be_empty }
+        end
+
+        context "a vault with empty fullfile and one add transation" do
+            it { expect(accounts "empty-fullfile-one-add-transaction").to eq [dude] }
         end
     end
 end
