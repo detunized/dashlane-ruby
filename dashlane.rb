@@ -98,12 +98,18 @@ def decrypt_blob blob, password
     end
 end
 
+def pretty_print_xml xml
+    REXML::Document.new(xml).write $stdout, 2
+    puts
+end
+
 def dump_vault filename, password
     vault = JSON.load File.read filename
-    puts decrypt_blob vault["fullBackupFile"], password
+    pretty_print_xml decrypt_blob vault["fullBackupFile"], password
     vault["transactionList"].each do |i|
         if i.fetch("content", "") != ""
-            puts decrypt_blob i["content"], password
+            puts "---"
+            pretty_print_xml decrypt_blob i["content"], password
         end
     end
 end
