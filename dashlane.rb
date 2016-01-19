@@ -117,6 +117,7 @@ end
 def parse_xml xml
     REXML::Document.new(xml).elements.to_a("//KWAuthentifiant").map { |i|
         {
+                  id: i.text("KWDataItem[@key='Id']"),
                 name: i.text("KWDataItem[@key='Title']"),
             username: i.text("KWDataItem[@key='Login']"),
             password: i.text("KWDataItem[@key='Password']"),
