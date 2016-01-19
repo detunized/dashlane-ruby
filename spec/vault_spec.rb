@@ -17,6 +17,12 @@ describe Dashlane::Vault do
                                        "https://dude.com",
                                        "Get a new rug!" }
 
+    let(:nam) { Dashlane::Account.new "nam.com",
+                                      "walter.sobchak",
+                                      "worldofpain",
+                                      "https://nam.com",
+                                      "Don't roll on Shabbos!" }
+
     describe ".open_remote" do
         it "returns a vault" do
             expect(Dashlane::Vault.open_remote username, password, uki).to be_a Dashlane::Vault
@@ -54,6 +60,10 @@ describe Dashlane::Vault do
 
         context "a vault with empty fullfile and one add transation" do
             it { expect(accounts "empty-fullfile-one-add-transaction").to eq [dude] }
+        end
+
+        context "a vault with empty fullfile and two add transations" do
+            it { expect(accounts "empty-fullfile-two-add-transactions").to eq [dude, nam] }
         end
     end
 end
