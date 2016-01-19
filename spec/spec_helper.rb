@@ -31,5 +31,13 @@ module Dashlane
                 url == other.url &&
                 note == other.note
         end
+
+        def inspect
+            name
+        end
+
+        def pretty_print pp
+            pp.pp_object self
+        end
     end
 end
