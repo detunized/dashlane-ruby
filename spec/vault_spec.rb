@@ -69,5 +69,9 @@ describe Dashlane::Vault do
         context "a vault with empty fullfile and two add and one remove transations" do
             it { expect(accounts "empty-fullfile-two-add-one-remove-transactions").to eq [dude, nam] }
         end
+
+        context "a vault with two accounts in fullfile" do
+            it { expect(accounts "two-accounts-in-fullfile").to eq [dude, nam] }
+        end
     end
 end
