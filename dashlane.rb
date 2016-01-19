@@ -102,7 +102,9 @@ def dump_vault filename, password
     vault = JSON.load File.read filename
     puts decrypt_blob vault["fullBackupFile"], password
     vault["transactionList"].each do |i|
-        puts decrypt_blob i["content"], password
+        if i.fetch("content", "") != ""
+            puts decrypt_blob i["content"], password
+        end
     end
 end
 
