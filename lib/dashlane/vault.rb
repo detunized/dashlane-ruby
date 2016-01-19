@@ -23,6 +23,12 @@ module Dashlane
                 @accounts += Parser.extract_encrypted_accounts data["fullBackupFile"], password
             end
 
+            # TODO: Remove transactions are simply ignored. This is at the moment a feature. Though
+            #       it's really a bug. This makes it possible to see deleted accounts in some cases.
+            #       This could be a problem though with editing of existing accounts. Need to test
+            #       more. This only happens when we have accounts in the fullBackupFile and
+            #       transactions to remove them.
+
             @accounts += data["transactionList"]
                 .select { |i| i["type"] == "AUTHENTIFIANT" && i["action"] == "BACKUP_EDIT" }
                 .flat_map { |i| Parser.extract_encrypted_accounts i["content"], password }
