@@ -3,6 +3,7 @@
 
 require "json"
 require "openssl"
+require "net/http"
 require "rexml/document"
 require "zlib"
 

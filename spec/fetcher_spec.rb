@@ -9,7 +9,9 @@ describe Dashlane::Fetcher do
 
     describe ".fetch" do
         it "returns a vault" do
-            expect(Dashlane::Fetcher.fetch username, uki).to be_a String
+            response = double "response", code: "200", body: ""
+            http = double "http", post_form: response
+            expect(Dashlane::Fetcher.fetch username, uki, http).to be_a String
         end
     end
 end

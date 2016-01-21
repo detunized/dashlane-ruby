@@ -3,9 +3,20 @@
 
 module Dashlane
     class Fetcher
-        def self.fetch username, uki
-            # TODO: Get a premium account and fetch the actual vault
-            File.read "vault.json"
+        def self.fetch username, uki, http = Net::HTTP
+            uri = URI "https://www.dashlane.com/12/backup/latest"
+            response = http.post_form uri, {
+                login: username,
+                lock: "nolock",
+                timestamp: 1,
+                sharingTimestamp: 0,
+                uki: uki
+            }
+
+            # TODO: Use custom exception!
+            raise "Fetch failed" if response.code != "200"
+
+            response.body
         end
     end
 end

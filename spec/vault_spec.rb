@@ -27,7 +27,9 @@ describe Dashlane::Vault do
 
     describe ".open_remote" do
         it "returns a vault" do
-            expect(Dashlane::Vault.open_remote username, password, uki).to be_a Dashlane::Vault
+            response = double "response", code: "200", body: blob
+            http = double "http", post_form: response
+            expect(Dashlane::Vault.open_remote username, password, uki, http).to be_a Dashlane::Vault
         end
     end
 

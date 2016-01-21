@@ -5,8 +5,8 @@ module Dashlane
     class Vault
         attr_reader :accounts
 
-        def self.open_remote username, password, uki
-            text = Fetcher.fetch username, uki
+        def self.open_remote username, password, uki, http = Net::HTTP
+            text = Fetcher.fetch username, uki, http
             new text, password
         end
 
