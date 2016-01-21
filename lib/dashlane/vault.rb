@@ -18,22 +18,28 @@ module Dashlane
         def initialize text, password
             data = JSON.load text
 
-            @accounts = []
+            accounts = {}
             if data.key?("fullBackupFile") && !data["fullBackupFile"].empty?
-                @accounts += Parser.extract_encrypted_accounts data["fullBackupFile"], password
+                Parser.extract_encrypted_accounts(data["fullBackupFile"], password).each do |i|
+                    accounts[i.id] = i
+                end
             end
 
             data["transactionList"].each do |transaction|
                 if transaction["type"] == "AUTHENTIFIANT"
                     case transaction["action"]
                     when "BACKUP_EDIT"
-                        @accounts += Parser.extract_encrypted_accounts transaction["content"],
-                                                                       password
+                        Parser.extract_encrypted_accounts(transaction["content"], password).each do |i|
+                            accounts[i.id] = i
+                        end
                     when "BACKUP_REMOVE"
-                        @accounts.delete_if { |i| i.id == transaction["identifier"] }
+                        accounts.delete transaction["identifier"]
                     end
                 end
             end
+
+            # Order by id to introduce some determinism. No other hidden meaning here.
+            @accounts = accounts.values.sort_by { |i| i.id }
         end
     end
 end
