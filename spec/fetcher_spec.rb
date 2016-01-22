@@ -72,6 +72,12 @@ describe Dashlane::Fetcher do
                                   "Unknown error"
         end
 
+        it "raises an exception on invalid username/password" do
+            check_raise_with_body %Q[{"objectType": "message", "content": "Incorrect authentification"}],
+                                  Dashlane::AuthenticationError,
+                                  "Invalid username or password"
+        end
+
         it "raises an exception on a message" do
             message = "Dashlane is upset"
             check_raise_with_body %Q[{"objectType": "message", "content": "#{message}"}],

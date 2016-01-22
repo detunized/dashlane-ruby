@@ -15,6 +15,9 @@ module Dashlane
     # Server responded with something we don't understand
     class InvalidResponseError < Error; end
 
+    # Either username or password is invalid, maybe both
+    class AuthenticationError < Error; end
+
     # Server responded with an error that we don't know
     class UnknownError < Error; end
 end

@@ -29,7 +29,12 @@ module Dashlane
             end
 
             if parsed["objectType"] == "message"
-                raise UnknownError.new parsed["content"]
+                case message = parsed["content"]
+                when "Incorrect authentification"
+                    raise AuthenticationError.new "Invalid username or password"
+                else
+                    raise UnknownError.new message
+                end
             end
 
             # TODO: Do some integrity check to see if it's the actual vault we've got here!
