@@ -13,9 +13,13 @@ describe Dashlane::Fetcher do
         let(:ok) { http_ok blob }
         let(:error) { double "response", code: "404", body: "" }
 
+        def fetch http
+            Dashlane::Fetcher.fetch username, uki, http
+        end
+
         it "returns a vault" do
             http = double "http", post_form: ok
-            expect(Dashlane::Fetcher.fetch username, uki, http).to eq vault
+            expect(fetch http).to eq vault
         end
 
         it "makes a POST request to a specific URL" do
@@ -23,7 +27,7 @@ describe Dashlane::Fetcher do
             expect(http).to receive(:post_form)
                 .with(uri_of("https://www.dashlane.com/12/backup/latest"), anything)
                 .and_return(ok)
-            Dashlane::Fetcher.fetch username, uki, http
+            fetch http
         end
 
         it "makes a POST request with correct parameters" do
@@ -31,20 +35,20 @@ describe Dashlane::Fetcher do
             expect(http).to receive(:post_form)
                 .with(anything, hash_including(login: username, uki: uki))
                 .and_return(ok)
-            Dashlane::Fetcher.fetch username, uki, http
+            fetch http
         end
 
         it "raises an exception on HTTP error" do
             http = double "http", post_form: error
             expect {
-                Dashlane::Fetcher.fetch username, uki, http
+                fetch http
             }.to raise_error Dashlane::NetworkError
         end
 
         it "raises an exception on invalid JSON" do
             http = double "http", post_form: http_ok("} invalid JSON {")
             expect {
-                Dashlane::Fetcher.fetch username, uki, http
+                fetch http
             }.to raise_error Dashlane::InvalidResponseError, "Invalid JSON object"
         end
     end
