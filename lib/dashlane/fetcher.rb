@@ -25,11 +25,11 @@ module Dashlane
             parsed = JSON.load json rescue raise InvalidResponseError.new "Invalid JSON object"
 
             if parsed.key? "error"
-                raise parsed["error"].fetch "message", "Unknown error"
+                raise UnknownError.new parsed["error"].fetch "message", "Unknown error"
             end
 
             if parsed["objectType"] == "message"
-                raise parsed.fetch "content", "Unknown error"
+                raise UnknownError.new parsed["content"]
             end
 
             # TODO: Do some integrity check to see if it's the actual vault we've got here!

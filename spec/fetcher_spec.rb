@@ -58,6 +58,26 @@ describe Dashlane::Fetcher do
                                   Dashlane::InvalidResponseError,
                                   "Invalid JSON object"
         end
+
+        it "raises an exception on an unknown error with a message" do
+            message = "Dashlane is upset"
+            check_raise_with_body %Q[{"error": {"message": "#{message}"}}],
+                                  Dashlane::UnknownError,
+                                  message
+        end
+
+        it "raises an exception on an unknown error without a message" do
+            check_raise_with_body '{"error": {}}',
+                                  Dashlane::UnknownError,
+                                  "Unknown error"
+        end
+
+        it "raises an exception on a message" do
+            message = "Dashlane is upset"
+            check_raise_with_body %Q[{"objectType": "message", "content": "#{message}"}],
+                                  Dashlane::UnknownError,
+                                  message
+        end
     end
 
     private
