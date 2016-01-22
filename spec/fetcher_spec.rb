@@ -17,6 +17,17 @@ describe Dashlane::Fetcher do
             Dashlane::Fetcher.fetch username, uki, http
         end
 
+        def check_raise response, error_type, message = nil
+            http = double "http", post_form: response
+            expect {
+                fetch http
+            }.to raise_error error_type, message
+        end
+
+        def check_raise_with_body body, error_type, message = nil
+            check_raise http_ok(body), error_type, message
+        end
+
         it "returns a vault" do
             http = double "http", post_form: ok
             expect(fetch http).to eq vault
@@ -39,17 +50,13 @@ describe Dashlane::Fetcher do
         end
 
         it "raises an exception on HTTP error" do
-            http = double "http", post_form: error
-            expect {
-                fetch http
-            }.to raise_error Dashlane::NetworkError
+            check_raise error, Dashlane::NetworkError
         end
 
         it "raises an exception on invalid JSON" do
-            http = double "http", post_form: http_ok("} invalid JSON {")
-            expect {
-                fetch http
-            }.to raise_error Dashlane::InvalidResponseError, "Invalid JSON object"
+            check_raise_with_body "} invalid JSON {",
+                                  Dashlane::InvalidResponseError,
+                                  "Invalid JSON object"
         end
     end
 
