@@ -16,7 +16,25 @@ module Dashlane
 
             raise NetworkError if response.code != "200"
 
-            response.body
+            parse_and_check_for_errors response.body
+        end
+
+        private
+
+        def self.parse_and_check_for_errors json
+            parsed = JSON.load json rescue raise "Invalid response"
+
+            if parsed.key? "error"
+                raise parsed["error"].fetch "message", "Unknown error"
+            end
+
+            if parsed["objectType"] == "message"
+                raise parsed.fetch "content", "Unknown error"
+            end
+
+            # TODO: Do some integrity check to see if it's the actual vault we've got here!
+
+            parsed
         end
     end
 end

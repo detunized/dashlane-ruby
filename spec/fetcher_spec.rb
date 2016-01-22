@@ -6,7 +6,8 @@ require "spec_helper"
 describe Dashlane::Fetcher do
     let(:username) { "username" }
     let(:uki) { "uki" }
-    let(:blob) { "blob" }
+    let(:blob) { "{}" }
+    let(:vault) { {} }
 
     describe ".fetch" do
         let(:ok) { double "response", code: "200", body: blob }
@@ -14,7 +15,7 @@ describe Dashlane::Fetcher do
 
         it "returns a vault" do
             http = double "http", post_form: ok
-            expect(Dashlane::Fetcher.fetch username, uki, http).to eq blob
+            expect(Dashlane::Fetcher.fetch username, uki, http).to eq vault
         end
 
         it "makes a POST request to a specific URL" do

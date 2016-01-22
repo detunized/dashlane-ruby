@@ -7,9 +7,10 @@ describe Dashlane::Vault do
     let(:username) { "username" }
     let(:password) { "password" }
     let(:uki) { "uki" }
-    let(:filename) { "vault.json" }
+    let(:filename) { "vault.json" } # TODO: Stop using this file and delete it!
     let(:blob) { File.read filename }
-    let(:vault) { Dashlane::Vault.new blob, password }
+    let(:parsed) { JSON.load blob }
+    let(:vault) { Dashlane::Vault.new parsed, password }
 
     let(:dude) { Dashlane::Account.new "1",
                                        "dude.com",
@@ -39,9 +40,15 @@ describe Dashlane::Vault do
         end
     end
 
+    describe ".open" do
+        it "returns a vault" do
+            expect(Dashlane::Vault.open blob, password).to be_a Dashlane::Vault
+        end
+    end
+
     describe ".new" do
         it "returns a vault" do
-            expect(Dashlane::Vault.new blob, password).to be_a Dashlane::Vault
+            expect(Dashlane::Vault.new parsed, password).to be_a Dashlane::Vault
         end
     end
 

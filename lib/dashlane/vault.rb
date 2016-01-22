@@ -6,18 +6,21 @@ module Dashlane
         attr_reader :accounts
 
         def self.open_remote username, password, uki, http = Net::HTTP
-            text = Fetcher.fetch username, uki, http
-            new text, password
+            parsed = Fetcher.fetch username, uki, http
+            new parsed, password
         end
 
         def self.open_local filename, username, password
-            text = File.read filename
-            new text, password
+            blob = File.read filename
+            open blob, password
         end
 
-        def initialize text, password
-            data = JSON.load text
+        def self.open blob, password
+            parsed = JSON.load blob
+            new parsed, password
+        end
 
+        def initialize data, password
             accounts = {}
             if data.key?("fullBackupFile") && !data["fullBackupFile"].empty?
                 Parser.extract_encrypted_accounts(data["fullBackupFile"], password).each do |i|
