@@ -14,8 +14,7 @@ module Dashlane
                 uki: uki
             }
 
-            # TODO: Use custom exception!
-            raise "Fetch failed" if response.code != "200"
+            raise NetworkError if response.code != "200"
 
             response.body
         end

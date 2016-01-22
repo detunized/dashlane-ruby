@@ -37,7 +37,7 @@ describe Dashlane::Fetcher do
             http = double "http", post_form: error
             expect {
                 Dashlane::Fetcher.fetch username, uki, http
-            }.to raise_error RuntimeError
+            }.to raise_error Dashlane::NetworkError
         end
     end
 end
