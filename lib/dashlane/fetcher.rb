@@ -22,18 +22,18 @@ module Dashlane
         private
 
         def self.parse_and_check_for_errors json
-            parsed = JSON.load json rescue raise InvalidResponseError.new "Invalid JSON object"
+            parsed = JSON.load json rescue raise InvalidResponseError, "Invalid JSON object"
 
             if parsed.key? "error"
-                raise UnknownError.new parsed["error"].fetch "message", "Unknown error"
+                raise UnknownError, parsed["error"].fetch("message", "Unknown error")
             end
 
             if parsed["objectType"] == "message"
                 case message = parsed["content"]
                 when "Incorrect authentification"
-                    raise AuthenticationError.new "Invalid username or password"
+                    raise AuthenticationError, "Invalid username or password"
                 else
-                    raise UnknownError.new message
+                    raise UnknownError, message
                 end
             end
 
