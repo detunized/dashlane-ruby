@@ -6,12 +6,38 @@ require "spec_helper"
 describe Dashlane::Fetcher do
     let(:username) { "username" }
     let(:uki) { "uki" }
+    let(:blob) { "blob" }
 
     describe ".fetch" do
+        let(:ok) { double "response", code: "200", body: blob }
+        let(:error) { double "response", code: "404", body: "" }
+
         it "returns a vault" do
-            response = double "response", code: "200", body: ""
-            http = double "http", post_form: response
-            expect(Dashlane::Fetcher.fetch username, uki, http).to be_a String
+            http = double "http", post_form: ok
+            expect(Dashlane::Fetcher.fetch username, uki, http).to eq blob
+        end
+
+        it "makes a POST request to a specific URL" do
+            http = double "http"
+            expect(http).to receive(:post_form)
+                .with(uri_of("https://www.dashlane.com/12/backup/latest"), anything)
+                .and_return(ok)
+            Dashlane::Fetcher.fetch username, uki, http
+        end
+
+        it "makes a POST request with correct parameters" do
+            http = double "http"
+            expect(http).to receive(:post_form)
+                .with(anything, hash_including(login: username, uki: uki))
+                .and_return(ok)
+            Dashlane::Fetcher.fetch username, uki, http
+        end
+
+        it "raises an exception on HTTP error" do
+            http = double "http", post_form: error
+            expect {
+                Dashlane::Fetcher.fetch username, uki, http
+            }.to raise_error RuntimeError
         end
     end
 end

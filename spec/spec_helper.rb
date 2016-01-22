@@ -12,6 +12,10 @@ require "rspec/its"
 
 require "dashlane"
 
+RSpec::Matchers.define :uri_of do |url|
+    match { |actual| URI === actual && actual.to_s == url }
+end
+
 class String
     def decode_base64
         Base64.decode64 self
