@@ -22,7 +22,7 @@ module Dashlane
         private
 
         def self.parse_and_check_for_errors json
-            parsed = JSON.load json rescue raise "Invalid response"
+            parsed = JSON.load json rescue raise InvalidResponseError.new "Invalid JSON object"
 
             if parsed.key? "error"
                 raise parsed["error"].fetch "message", "Unknown error"

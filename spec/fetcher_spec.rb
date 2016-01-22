@@ -10,7 +10,7 @@ describe Dashlane::Fetcher do
     let(:vault) { {} }
 
     describe ".fetch" do
-        let(:ok) { double "response", code: "200", body: blob }
+        let(:ok) { http_ok blob }
         let(:error) { double "response", code: "404", body: "" }
 
         it "returns a vault" do
@@ -40,5 +40,18 @@ describe Dashlane::Fetcher do
                 Dashlane::Fetcher.fetch username, uki, http
             }.to raise_error Dashlane::NetworkError
         end
+
+        it "raises an exception on invalid JSON" do
+            http = double "http", post_form: http_ok("} invalid JSON {")
+            expect {
+                Dashlane::Fetcher.fetch username, uki, http
+            }.to raise_error Dashlane::InvalidResponseError, "Invalid JSON object"
+        end
+    end
+
+    private
+
+    def http_ok body
+        double "response", code: "200", body: body
     end
 end

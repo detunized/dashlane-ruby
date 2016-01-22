@@ -11,4 +11,7 @@ module Dashlane
 
     # Something went wrong with the network
     class NetworkError < Error; end
+
+    # Server responded with something we don't understand
+    class InvalidResponseError < Error; end
 end
