@@ -18,7 +18,7 @@ module Dashlane
 
         # This initiates a request. Dashlane should send an email with a token. Plug it into step 2.
         def self.register_uki_step_1 username, http = Net::HTTP
-            response = Net::HTTP.post_form TOKEN_URI, {
+            response = http.post_form TOKEN_URI, {
                 login: username,
                 isOTPAware: true
             }
@@ -29,7 +29,7 @@ module Dashlane
 
         # Token should be reveived via email. See step 1.
         def self.register_uki_step_2 username, device_name, uki, token, http = Net::HTTP
-            response = Net::HTTP.post_form REGISTER_URI, {
+            response = http.post_form REGISTER_URI, {
                 devicename: device_name,
                 login: username,
                 platform: "webaccess",
