@@ -4,6 +4,7 @@ Dashlane Ruby API
 [![Build Status](https://travis-ci.org/detunized/dashlane-ruby.svg?branch=master)](https://travis-ci.org/detunized/dashlane-ruby)
 [![Coverage Status](https://coveralls.io/repos/github/detunized/dashlane-ruby/badge.svg?branch=master)](https://coveralls.io/github/detunized/dashlane-ruby?branch=master)
 [![Code Climate](https://codeclimate.com/github/detunized/dashlane-ruby/badges/gpa.svg)](https://codeclimate.com/github/detunized/dashlane-ruby)
+[![Dependency Status](https://gemnasium.com/detunized/dashlane-ruby.svg)](https://gemnasium.com/detunized/dashlane-ruby)
 
 **This is unofficial Dashlane API.**
 
