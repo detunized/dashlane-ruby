@@ -41,5 +41,10 @@ module Dashlane
             raise NetworkError if response.code != "200"
             raise RegisterError if response.body != "SUCCESS"
         end
+
+        # Imports UKI from a local database
+        def self.import username, password
+            Import.load_uki username, password
+        end
     end
 end
