@@ -13,9 +13,15 @@ username = credentials["username"]
 password = credentials["password"]
 
 begin
-    uki = Dashlane::Uki.import username, password
-    puts "Found UKI: #{uki}"
-rescue
+    # TODO: Show UKI registration here as well
+
+    uki = Dashlane::Uki.import username.reverse, password
+    vault = Dashlane::Vault.open_remote username, password, uki
+
+    vault.accounts.each_with_index do |i, index|
+        puts "#{index + 1}: #{i.name} #{i.username} #{i.password} #{i.url} #{i.note}"
+    end
+rescue => e
     puts "Account #{username} doesn't seem to exist, incorrent password or " +
-         "the platform is not currenlty supported"
+         "the platform is not currenlty supported '#{e}'"
 end
