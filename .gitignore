@@ -2,3 +2,4 @@
 /.password
 /.username
 /encrypted.json
+/example/credentials.yaml

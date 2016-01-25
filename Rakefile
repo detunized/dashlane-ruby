@@ -10,3 +10,8 @@ task :default => :spec
 RSpec::Core::RakeTask.new :spec do |task|
     task.rspec_opts = "--format documentation --color"
 end
+
+# Example
+task :example do
+    ruby "-Ilib", "example/example.rb"
+end
