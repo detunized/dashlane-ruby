@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
     s.summary     = "Unofficial Dashlane API"
     s.description = "Unofficial Dashlane API"
 
-    s.required_ruby_version = ">= 1.9.3"
+    s.required_ruby_version = ">= 2.0.0"
 
     s.add_development_dependency "rake", "~> 10.4.0"
     s.add_development_dependency "rspec", "~> 3.1.0"
