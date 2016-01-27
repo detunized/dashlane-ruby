@@ -137,7 +137,3 @@ def load_vault filename, password
 
     accounts
 end
-
-if __FILE__ == $0
-    p load_vault "vault.json", "password"
-end

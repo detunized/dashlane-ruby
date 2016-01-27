@@ -7,7 +7,7 @@ describe Dashlane::Vault do
     let(:username) { "username" }
     let(:password) { "password" }
     let(:uki) { "uki" }
-    let(:filename) { "vault.json" } # TODO: Stop using this file and delete it!
+    let(:filename) { "spec/fixtures/non-empty-vault.json" }
     let(:blob) { File.read filename }
     let(:parsed) { JSON.load blob }
     let(:vault) { Dashlane::Vault.new parsed, password }
