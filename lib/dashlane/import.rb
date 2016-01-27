@@ -21,8 +21,7 @@ module Dashlane
             settings_path = "Settings/localSettings.aes"
 
             path = File.join Dir.home, profiles_path, username, settings_path
-            # TODO: Use custom exception!
-            raise "Profile '#{username}' doesn't exist" if !File.exist? path
+            raise ImportError, "Profile '#{username}' doesn't exist" if !File.exist? path
 
             path
         end

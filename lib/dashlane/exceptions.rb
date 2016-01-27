@@ -21,6 +21,9 @@ module Dashlane
     # Server responded with an error that we don't know
     class UnknownError < Error; end
 
+    # An error happened during one of the import operations
+    class ImportError < Error; end
+
     # An error happened during the new device/uki registration
     class RegisterError < Error; end
 end
