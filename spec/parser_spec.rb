@@ -78,7 +78,8 @@ describe Dashlane::Parser do
         let(:encryption_key) { "OAIU9FREAugcAkNtoeoUithzi2qXJQc6Gfj5WgPD0mY=".decode_base64 }
 
         def check iterations, expected
-            expect(Dashlane::Parser.derive_encryption_key_iv encryption_key, salt, 1).to eq expected
+            expect(Dashlane::Parser.derive_encryption_key_iv encryption_key, salt, iterations)
+                .to eq expected
         end
 
         it "returns an encryption key and IVs" do
@@ -88,8 +89,8 @@ describe Dashlane::Parser do
             }
 
             check 5, {
-                key: "6HA2Rq9GTeKzAc1imNjvyaXBGW4zRA5wIr60Vbx/o8w=".decode_base64,
-                iv: "fCk2EkpIYGn05JHcVfR8eQ==".decode_base64
+                key: "fsuGfEOoYL4uOmp24ZuAExIuVePh6YIu7t0rfCDogpM=".decode_base64,
+                iv: "/vsHfrsRzyGCQOBP4UEQuw==".decode_base64
             }
         end
     end
