@@ -3,7 +3,7 @@
 
 module Dashlane
     class Fetcher
-        LATEST_URI = URI "https://www.dashlane.com/12/backup/latest"
+        LATEST_URI = URI "https://ws1.dashlane.com/12/backup/latest"
 
         def self.fetch username, uki, http = Net::HTTP
             response = http.post_form LATEST_URI, {

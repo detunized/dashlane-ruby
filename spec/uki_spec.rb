@@ -32,7 +32,7 @@ describe Dashlane::Uki do
         it "make a POST request to a specific URL" do
             http = double "http"
             expect(http).to receive(:post_form)
-                .with(uri_of("https://www.dashlane.com/6/authentication/sendtoken"), anything)
+                .with(uri_of("https://ws1.dashlane.com/6/authentication/sendtoken"), anything)
                 .and_return(ok)
 
             step1 http
@@ -71,7 +71,7 @@ describe Dashlane::Uki do
         it "make a POST request to a specific URL" do
             http = double "http"
             expect(http).to receive(:post_form)
-                .with(uri_of("https://www.dashlane.com/6/authentication/registeruki"), anything)
+                .with(uri_of("https://ws1.dashlane.com/6/authentication/registeruki"), anything)
                 .and_return(ok)
 
             step2 http

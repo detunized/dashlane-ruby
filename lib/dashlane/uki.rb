@@ -3,8 +3,8 @@
 
 module Dashlane
     module Uki
-        TOKEN_URI = URI "https://www.dashlane.com/6/authentication/sendtoken"
-        REGISTER_URI = URI "https://www.dashlane.com/6/authentication/registeruki"
+        TOKEN_URI = URI "https://ws1.dashlane.com/6/authentication/sendtoken"
+        REGISTER_URI = URI "https://ws1.dashlane.com/6/authentication/registeruki"
 
         def self.generate
             # This loosely mirrors the web uki generation process. Not clear if it's needed. Looks

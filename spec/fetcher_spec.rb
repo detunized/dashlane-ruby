@@ -36,7 +36,7 @@ describe Dashlane::Fetcher do
         it "makes a POST request to a specific URL" do
             http = double "http"
             expect(http).to receive(:post_form)
-                .with(uri_of("https://www.dashlane.com/12/backup/latest"), anything)
+                .with(uri_of("https://ws1.dashlane.com/12/backup/latest"), anything)
                 .and_return(ok)
             fetch http
         end
