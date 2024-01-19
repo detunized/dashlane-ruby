@@ -6,6 +6,15 @@ Dashlane Ruby API
 [![Code Climate](https://codeclimate.com/github/detunized/dashlane-ruby/badges/gpa.svg)](https://codeclimate.com/github/detunized/dashlane-ruby)
 [![Dependency Status](https://gemnasium.com/detunized/dashlane-ruby.svg)](https://gemnasium.com/detunized/dashlane-ruby)
 
+## No longer supported
+
+This project is no longer supported. There's a fully supported and regularly 
+updated C# library that implements access to a veriety of password managers, 
+including Dashlane. Please check out 
+[Password Manager Access](https://github.com/detunized/password-manager-access).
+
+---
+
 **This is unofficial Dashlane API.**
 
 Currently in development. Not much to say.
